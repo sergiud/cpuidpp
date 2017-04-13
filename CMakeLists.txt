@@ -93,10 +93,10 @@ configure_package_config_file (cpuidpp-config.cmake.in
 write_basic_package_version_file (cpuidpp-config-version.cmake
   VERSION ${VERSION} COMPATIBILITY SameMajorVersion)
 
-export (TARGETS cpuidpp FILE cpuidpp-targets.cmake)
+export (TARGETS cpuidpp NAMESPACE cpuidpp:: FILE cpuidpp-targets.cmake)
 export (PACKAGE cpuidpp)
 
-install (EXPORT cpuidpp-targets
+install (EXPORT cpuidpp-targets NAMESPACE cpuidpp::
   DESTINATION ${cpuidpp_CMake_INSTALLDIR}
   COMPONENT Development)
 install (FILES
