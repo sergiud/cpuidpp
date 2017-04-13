@@ -442,7 +442,7 @@ struct CPUIDImpl
 
     static const CPUIDImpl& get()
     {
-        static CPUIDImpl instance;
+        static const CPUIDImpl instance;
         return instance;
     }
 
