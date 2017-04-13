@@ -26,24 +26,14 @@ namespace cpuidpp {
 namespace {
 
 #if defined(HAVE___GET_CPUID)
-inline void cpuid(int* info, int leaf)
+inline void cpuid(unsigned* info, unsigned leaf)
 {
-    unsigned eax;
-    unsigned ebx;
-    unsigned ecx;
-    unsigned edx;
-
-    __get_cpuid(leaf, &eax, &ebx, &ecx, &edx);
-
-    info[0] = eax;
-    info[1] = ebx;
-    info[2] = ecx;
-    info[3] = edx;
+    __get_cpuid(leaf, info, info + 1, info + 2, info + 3);
 }
 #elif defined(HAVE___CPUID)
-inline void cpuid(int* info, int leaf)
+inline void cpuid(unsigned* info, unsigned leaf)
 {
-    __cpuid(info, leaf);
+    __cpuid(reinterpret_cast<int*>(info), static_cast<int>(leaf));
 }
 #else
 /**
@@ -54,7 +44,7 @@ inline void cpuid(int* info, int leaf)
  *        eax, @c ebx, @c ecx and @c edx.
  * @param leaf Information leaf: @c eax register.
  */
-inline void cpuid(int* info, int leaf)
+inline void cpuid(unsigned* info, unsigned leaf)
 {
 #if defined(__i386__) && defined(__PIC__)
     __asm__ (
@@ -85,27 +75,18 @@ inline void cpuid(int* info, int leaf)
 #endif
 
 #if defined(HAVE___GET_CPUID_COUNT)
-inline void cpuidex(int* info, int leaf, int subleaf)
+inline void cpuidex(unsigned* info, unsigned leaf, unsigned subleaf)
 {
-    unsigned eax;
-    unsigned ebx;
-    unsigned ecx;
-    unsigned edx;
-
-    __get_cpuid_count(leaf, subleaf, &eax, &ebx, &ecx, &edx);
-
-    info[0] = eax;
-    info[1] = ebx;
-    info[2] = ecx;
-    info[3] = edx;
+    __get_cpuid_count(leaf, subleaf, info, info + 1, info + 2, info + 3);
 }
 #elif defined(HAVE___CPUIDEX)
-inline void cpuidex(int* info, int leaf, int subleaf)
+inline void cpuidex(unsigned* info, unsigned leaf, unsigned subleaf)
 {
-    __cpuidex(info, leaf, subleaf);
+    __cpuidex(reinterpret_cast<int*>(info), static_cast<int>(leaf),
+            static_cast<int>(subleaf));
 }
 #else
-inline void cpuidex(int* info, int leaf, int subleaf)
+inline void cpuidex(unsigned* info, unsigned leaf, unsigned subleaf)
 {
     __asm__ (
         "cpuid"
@@ -133,7 +114,7 @@ struct CPUIDImpl
 {
     CPUIDImpl()
     {
-        std::array<int, 4> info{};
+        std::array<unsigned, 4> info{};
         // EAX=0
         cpuid(info.data(), 0);
 
@@ -175,7 +156,7 @@ struct CPUIDImpl
         // EAX=0x80000000
         cpuid(info.data(), 0x80000000);
 
-        const int max_leaf = info[0];
+        const unsigned max_leaf = static_cast<unsigned>(info[0]);
 
         if (max_leaf >= 0x80000001 && vendor == "AuthenticAMD") {
             info.fill(0);
