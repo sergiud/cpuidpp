@@ -85,6 +85,7 @@ set (cpuidpp_CMake_DIR cpuidpp/cmake)
 
 # cpuidpp-config.cmake relative install directory
 set (cpuidpp_CMake_INSTALLDIR ${CMAKE_INSTALL_LIBDIR}/${cpuidpp_CMake_DIR})
+set (cpuidpp_CMake_LIBDIR ${CMAKE_INSTALL_LIBDIR}/cpuidpp)
 
 configure_package_config_file (cpuidpp-config.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/cpuidpp-config.cmake
@@ -106,8 +107,8 @@ install (FILES
 install (TARGETS cpuidpp
   EXPORT cpuidpp-targets
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT Runtime
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  LIBRARY DESTINATION ${cpuidpp_CMake_LIBDIR}
+  ARCHIVE DESTINATION ${cpuidpp_CMake_LIBDIR})
 install (FILES
   ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/cpuidpp/export.hpp
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cpuidpp
