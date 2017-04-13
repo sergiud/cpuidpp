@@ -23,6 +23,8 @@ include (GenerateExportHeader)
 include (GNUInstallDirs)
 include (UseDoxygen OPTIONAL)
 
+# NOTE check_cxx_symbol_exists does not work with intrinsic functions. We need
+# to use check_cxx_source_compiles.
 check_cxx_source_compiles (
 "
 #include <intrin.h>
@@ -39,8 +41,6 @@ int main() { __cpuidex(NULL, 0, 0); }
   HAVE___CPUIDEX
 )
 
-#check_cxx_symbol_exists (__cpuid intrin.h HAVE___CPUID)
-#check_cxx_symbol_exists (__cpuidex intrin.h HAVE___CPUIDEX)
 check_cxx_symbol_exists (__get_cpuid cpuid.h HAVE___GET_CPUID)
 check_cxx_symbol_exists (__get_cpuid_count cpuid.h HAVE___GET_CPUID_COUNT)
 
