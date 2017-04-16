@@ -1,0 +1,6 @@
+/**
+ * @namespace cpuidpp
+ * @brief %cpuidpp functions.
+ */
+
+// vim: ft=cpp.doxygen

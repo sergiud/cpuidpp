@@ -52,7 +52,6 @@ add_library (cpuidpp
 
 target_compile_features (cpuidpp
   PRIVATE cxx_constexpr cxx_uniform_initialization
-  PUBLIC cxx_final cxx_deleted_functions
 )
 
 if (HAVE___CPUID)

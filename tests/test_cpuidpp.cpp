@@ -15,17 +15,15 @@
 #define CPUIDPP_FEATURE(name) #name
 #define CPUIDPP_SUPPORTED_FEATURE(out, name)                                        \
     out << std::setw(20) << std::left << CPUIDPP_FEATURE(name) << ' '               \
-        << std::setw(4)  << std::right << (cpuidpp::CPUID::name() ? "yes" : "no")   \
+        << std::setw(4)  << std::right << (cpuidpp::name() ? "yes" : "no")          \
         << '\n'                                                                     \
         ;
 
 
 int main()
 {
-    using cpuidpp::CPUID;
-
-    std::clog << "vendor: " << CPUID::vendor() << std::endl;
-    std::clog << "model: " << CPUID::model() << std::endl;
+    std::clog << "vendor: " << cpuidpp::vendor() << std::endl;
+    std::clog << "model: " << cpuidpp::model() << std::endl;
 
     CPUIDPP_SUPPORTED_FEATURE(std::clog, abm);
     CPUIDPP_SUPPORTED_FEATURE(std::clog, acpi);
@@ -67,7 +65,7 @@ int main()
     CPUIDPP_SUPPORTED_FEATURE(std::clog, ds_cpl);
     CPUIDPP_SUPPORTED_FEATURE(std::clog, dtes64);
     CPUIDPP_SUPPORTED_FEATURE(std::clog, erms);
-    CPUIDPP_SUPPORTED_FEATURE(std::clog, est);
+    CPUIDPP_SUPPORTED_FEATURE(std::clog, eist);
     CPUIDPP_SUPPORTED_FEATURE(std::clog, extapic);
     CPUIDPP_SUPPORTED_FEATURE(std::clog, f16c);
     CPUIDPP_SUPPORTED_FEATURE(std::clog, fma);

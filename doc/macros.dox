@@ -1,0 +1,21 @@
+/**
+ * @file cpuidpp/export.hpp
+ * @brief Export declarations.
+ *
+ * @def CPUIDPP_EXPORT
+ * @brief Exports symbol.
+ *
+ * @def CPUIDPP_NO_EXPORT
+ * @brief Declares a hidden symbol.
+ *
+ * @def CPUIDPP_DEPRECATED
+ * @brief Deprecates symbol.
+ *
+ * @def CPUIDPP_DEPRECATED_EXPORT
+ * @brief Deprecates exported symbol.
+ *
+ * @def CPUIDPP_DEPRECATED_NO_EXPORT
+ * @brief Deprecates a hidden symbol.
+ */
+
+// vim: ft=cpp.doxygen

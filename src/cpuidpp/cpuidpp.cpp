@@ -178,6 +178,7 @@ struct CPUIDImpl
             f1_3[24] = f80000001_3[24]; // fxr
         }
 
+        // TODO query the model only if requested
         if (max_leaf >= 0x80000004) {
             model.reserve(48);
 
@@ -253,11 +254,13 @@ struct CPUIDImpl
                 , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
             });
 
+            using std::placeholders::_1;
+
             // Trim whitespace left and right
             model.erase(model.begin(), std::find_if_not(model.begin(), model.end(),
-                std::bind(std::isspace<char>, std::placeholders::_1, std::locale::classic())));
+                std::bind(std::isspace<char>, _1, std::locale::classic())));
             model.erase(std::find_if_not(model.rbegin(), model.rend(),
-                std::bind(std::isspace<char>, std::placeholders::_1, std::locale::classic())).base(), model.end());
+                std::bind(std::isspace<char>, _1, std::locale::classic())).base(), model.end());
         }
     }
 
@@ -299,7 +302,7 @@ struct CPUIDImpl
     CPUIDPP_IMPL_FLAG(ds_cpl,           4, f1_2)
     CPUIDPP_IMPL_FLAG(vmx,              5, f1_2)
     CPUIDPP_IMPL_FLAG(smx,              6, f1_2)
-    CPUIDPP_IMPL_FLAG(est,              7, f1_2)
+    CPUIDPP_IMPL_FLAG(eist,             7, f1_2)
     CPUIDPP_IMPL_FLAG(tm2,              8, f1_2)
     CPUIDPP_IMPL_FLAG(ssse3,            9, f1_2)
     CPUIDPP_IMPL_FLAG(cnxt_id,          10, f1_2)
@@ -438,18 +441,18 @@ struct CPUIDImpl
     std::string model;
 };
 
-const std::string& CPUID::vendor()
+const std::string& vendor()
 {
     return CPUIDImpl::get().vendor;
 }
 
-const std::string& CPUID::model()
+const std::string& model()
 {
     return CPUIDImpl::get().model;
 }
 
 #define CPUIDPP_CPUID_IMPL_FLAG(name)       \
-    bool CPUID::name()                      \
+    bool name()                             \
     {                                       \
         return CPUIDImpl::get().name();     \
     }
@@ -493,7 +496,7 @@ CPUIDPP_CPUID_IMPL_FLAG(monitor)
 CPUIDPP_CPUID_IMPL_FLAG(ds_cpl)
 CPUIDPP_CPUID_IMPL_FLAG(vmx)
 CPUIDPP_CPUID_IMPL_FLAG(smx)
-CPUIDPP_CPUID_IMPL_FLAG(est)
+CPUIDPP_CPUID_IMPL_FLAG(eist)
 CPUIDPP_CPUID_IMPL_FLAG(tm2)
 CPUIDPP_CPUID_IMPL_FLAG(ssse3)
 CPUIDPP_CPUID_IMPL_FLAG(cnxt_id)
