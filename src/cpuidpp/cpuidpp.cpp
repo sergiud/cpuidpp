@@ -110,34 +110,14 @@ inline void cpuidex(unsigned* info, unsigned leaf, unsigned subleaf)
         return member.test(bit);             \
     }
 
+#define CPUIDPP_EXTRACT_CHAR(var, index1, index2) \
+    static_cast<char>((var[index1] >> ((index2) * 8)) & 0xff)
+
 struct CPUIDImpl
 {
     CPUIDImpl()
     {
         std::array<unsigned, 4> info{};
-        // EAX=0
-        cpuid(info.data(), 0);
-
-#define CPUIDPP_EXTRACT_CHAR(var, index1, index2) \
-            static_cast<char>((var[index1] >> ((index2) * 8)) & 0xff)
-
-        vendor =
-        {
-              CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-            , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-            , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-            , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-            , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-            , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-            , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-            , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-            , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-            , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-            , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-        };
-
-        info.fill(0);
         // EAX=1
         cpuid(info.data(), 1);
 
@@ -156,7 +136,7 @@ struct CPUIDImpl
         // EAX=0x80000000
         cpuid(info.data(), 0x80000000);
 
-        const unsigned max_leaf = static_cast<unsigned>(info[0]);
+        max_leaf = static_cast<unsigned>(info[0]);
 
         if (max_leaf >= 0x80000001 && vendor == "AuthenticAMD") {
             info.fill(0);
@@ -176,91 +156,6 @@ struct CPUIDImpl
             f1_3 &= ~mask_12_17;
             f1_3 |= f80000001_3.to_ulong() & mask_12_17;
             f1_3[24] = f80000001_3[24]; // fxr
-        }
-
-        // TODO query the model only if requested
-        if (max_leaf >= 0x80000004) {
-            model.reserve(48);
-
-            info.fill(0);
-            // EAX=0x80000002
-            cpuid(info.data(), 0x80000002);
-
-            model.append
-            ({
-                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            });
-
-            info.fill(0);
-            // EAX=0x80000003
-            cpuid(info.data(), 0x80000003);
-
-            model.append
-            ({
-                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            });
-
-            info.fill(0);
-            // EAX=0x80000004
-            cpuid(info.data(), 0x80000004);
-
-            model.append
-            ({
-                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            });
-
-            using std::placeholders::_1;
-
-            // Trim whitespace left and right
-            model.erase(model.begin(), std::find_if_not(model.begin(), model.end(),
-                std::bind(std::isspace<char>, _1, std::locale::classic())));
-            model.erase(std::find_if_not(model.rbegin(), model.rend(),
-                std::bind(std::isspace<char>, _1, std::locale::classic())).base(), model.end());
         }
     }
 
@@ -430,6 +325,123 @@ struct CPUIDImpl
         return instance;
     }
 
+    const std::string& query_model() const
+    {
+        if (model.empty() && max_leaf >= 0x80000004) {
+            model.reserve(48);
+
+            std::array<unsigned, 4> info{};
+            // EAX=0x80000002
+            cpuid(info.data(), 0x80000002);
+
+            model.append
+            ({
+                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
+            });
+
+            info.fill(0);
+            // EAX=0x80000003
+            cpuid(info.data(), 0x80000003);
+
+            model.append
+            ({
+                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
+            });
+
+            info.fill(0);
+            // EAX=0x80000004
+            cpuid(info.data(), 0x80000004);
+
+            model.append
+            ({
+                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
+            });
+
+            using std::placeholders::_1;
+
+            // Trim whitespace left and right
+            model.erase(model.begin(), std::find_if_not(model.begin(), model.end(),
+                std::bind(std::isspace<char>, _1, std::locale::classic())));
+            model.erase(std::find_if_not(model.rbegin(), model.rend(),
+                std::bind(std::isspace<char>, _1, std::locale::classic())).base(), model.end());
+        }
+
+        return model;
+    }
+
+    const std::string& query_vendor() const
+    {
+        if (vendor.empty()) {
+            std::array<unsigned, 4> info{};
+            // EAX=0
+            cpuid(info.data(), 0);
+
+            vendor =
+            {
+                  CPUIDPP_EXTRACT_CHAR(info, 1, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
+                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
+            };
+        }
+
+        return vendor;
+    }
+
+    unsigned max_leaf;
     std::bitset<32> f1_2;
     std::bitset<32> f1_3;
     std::bitset<32> f7_1;
@@ -437,18 +449,18 @@ struct CPUIDImpl
     std::bitset<32> f7_3;
     std::bitset<32> f80000001_2;
     std::bitset<32> f80000001_3;
-    std::string vendor;
-    std::string model;
+    mutable std::string vendor;
+    mutable std::string model;
 };
 
 const std::string& vendor()
 {
-    return CPUIDImpl::get().vendor;
+    return CPUIDImpl::get().query_vendor();
 }
 
 const std::string& model()
 {
-    return CPUIDImpl::get().model;
+    return CPUIDImpl::get().query_model();
 }
 
 #define CPUIDPP_CPUID_IMPL_FLAG(name)       \
