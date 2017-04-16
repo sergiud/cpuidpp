@@ -102,6 +102,105 @@ inline void cpuidex(unsigned* info, unsigned leaf, unsigned subleaf)
 }
 #endif
 
+template
+<
+      class T
+    , std::size_t N = sizeof(T)
+    , std::size_t Size = N
+>
+struct ExtractChar
+{
+    static void fill(T value, std::string& out)
+    {
+        constexpr std::size_t Index = N - 1;
+
+        ExtractChar<T, N - 1, Size>::fill(value, out);
+        out.append({ static_cast<char>((value >> (Index * 8)) & 0xff) });
+    }
+};
+
+template
+<
+      class T
+    , std::size_t Size
+>
+struct ExtractChar<T, 0, Size>
+{
+    static void fill(T, std::string&)
+    {
+    }
+};
+
+namespace detail {
+
+template
+<
+      std::size_t N
+    , std::size_t Counter
+    , std::size_t ...Indexes
+>
+struct ExtractCharsFromArray
+{
+    template<class T, std::size_t M>
+    static void fill(const std::array<T, M>& arr, std::string& out)
+    {
+        detail::ExtractCharsFromArray<N, Counter - 1, Indexes...>::fill(arr, out);
+    }
+};
+
+template
+<
+      std::size_t N
+    , std::size_t Index
+>
+struct ExtractCharsFromArray<N, 0, Index>
+{
+    template<class T, std::size_t M>
+    static void fill(const std::array<T, M>& arr, std::string& out)
+    {
+        ExtractChar<T>::fill(arr[Index], out);
+    }
+};
+
+template
+<
+      std::size_t N
+    , std::size_t Counter
+    , std::size_t Index
+    , std::size_t ...Indexes
+>
+struct ExtractCharsFromArray<N, Counter, Index, Indexes...>
+{
+    template<class T, std::size_t M>
+    static void fill(const std::array<T, M>& arr, std::string& out)
+    {
+        ExtractChar<T>::fill(arr[Index], out);
+        detail::ExtractCharsFromArray<N, Counter - 1, Indexes...>::fill(arr, out);
+    }
+};
+
+} // namesace detail
+
+template
+<
+    std::size_t ...Indexes
+>
+struct ExtractCharsFromArray
+{
+    template<class T, std::size_t N>
+    static std::string extract(const std::array<T, N>& arr)
+    {
+        std::string result;
+        result.reserve(N * sizeof(T));
+
+        constexpr std::size_t M = sizeof...(Indexes);
+
+        detail::ExtractCharsFromArray<M, M - 1, Indexes...>::fill(arr, result);
+
+        return result;
+    }
+};
+
 } // namespace
 
 #define CPUIDPP_IMPL_FLAG(name, bit, member) \
@@ -110,14 +209,12 @@ inline void cpuidex(unsigned* info, unsigned leaf, unsigned subleaf)
         return member.test(bit);             \
     }
 
-#define CPUIDPP_EXTRACT_CHAR(var, index1, index2) \
-    static_cast<char>((var[index1] >> ((index2) * 8)) & 0xff)
-
 struct CPUIDImpl
 {
     CPUIDImpl()
     {
         std::array<unsigned, 4> info{};
+
         // EAX=1
         cpuid(info.data(), 1);
 
@@ -138,7 +235,7 @@ struct CPUIDImpl
 
         max_leaf = static_cast<unsigned>(info[0]);
 
-        if (max_leaf >= 0x80000001 && vendor == "AuthenticAMD") {
+        if (max_leaf >= 0x80000001 && query_vendor() == "AuthenticAMD") {
             info.fill(0);
             // EAX=0x80000001
             cpuid(info.data(), 0x80000001);
@@ -334,73 +431,19 @@ struct CPUIDImpl
             // EAX=0x80000002
             cpuid(info.data(), 0x80000002);
 
-            model.append
-            ({
-                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            });
+            model += ExtractCharsFromArray<0, 1, 2, 3>::extract(info);
 
             info.fill(0);
             // EAX=0x80000003
             cpuid(info.data(), 0x80000003);
 
-            model.append
-            ({
-                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            });
+            model += ExtractCharsFromArray<0, 1, 2, 3>::extract(info);
 
             info.fill(0);
             // EAX=0x80000004
             cpuid(info.data(), 0x80000004);
 
-            model.append
-            ({
-                  CPUIDPP_EXTRACT_CHAR(info, 0, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 0, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-            });
+            model += ExtractCharsFromArray<0, 1, 2, 3>::extract(info);
 
             using std::placeholders::_1;
 
@@ -421,21 +464,7 @@ struct CPUIDImpl
             // EAX=0
             cpuid(info.data(), 0);
 
-            vendor =
-            {
-                  CPUIDPP_EXTRACT_CHAR(info, 1, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 1, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 3, 3)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 0)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 1)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 2)
-                , CPUIDPP_EXTRACT_CHAR(info, 2, 3)
-            };
+            vendor = ExtractCharsFromArray<1, 3, 2>::extract(info);
         }
 
         return vendor;

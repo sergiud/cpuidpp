@@ -51,7 +51,7 @@ add_library (cpuidpp
 )
 
 target_compile_features (cpuidpp
-  PRIVATE cxx_constexpr cxx_uniform_initialization
+  PRIVATE cxx_constexpr cxx_uniform_initialization cxx_variadic_templates
 )
 
 if (HAVE___CPUID)
