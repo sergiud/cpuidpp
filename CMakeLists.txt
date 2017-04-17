@@ -44,10 +44,23 @@ int main() { __cpuidex(NULL, 0, 0); }
 check_cxx_symbol_exists (__get_cpuid cpuid.h HAVE___GET_CPUID)
 check_cxx_symbol_exists (__get_cpuid_count cpuid.h HAVE___GET_CPUID_COUNT)
 
-add_library (cpuidpp
+configure_file (include/cpuidpp/version.hpp.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/cpuidpp/version.hpp
+)
+
+set (_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/cpuidpp/export.hpp
+  ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_INCLUDEDIR}/cpuidpp/version.hpp
   include/cpuidpp/cpuidpp.hpp
   src/cpuidpp/cpuidpp.cpp
+)
+
+if (BUILD_SHARED_LIBS)
+  list (APPEND _SRCS src/cpuidpp/resources/cpuidpp.rc)
+endif (BUILD_SHARED_LIBS)
+
+add_library (cpuidpp
+  ${_SRCS}
 )
 
 target_compile_features (cpuidpp

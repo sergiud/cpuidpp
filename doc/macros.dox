@@ -16,6 +16,24 @@
  *
  * @def CPUIDPP_DEPRECATED_NO_EXPORT
  * @brief Deprecates a hidden symbol.
+ *
+ * @file cpuidpp/version.hpp
+ * @brief Version information.
+ *
+ * @def CPUIDPP_BUILD_NUMBER
+ * @brief Build number.
+ *
+ * @def CPUIDPP_MAJOR_VERSION
+ * @brief Major version.
+ *
+ * @def CPUIDPP_MINOR_VERSION
+ * @brief Minor version.
+ *
+ * @def CPUIDPP_REVISION_NUMBER
+ * @brief Revision number.
+ *
+ * @def CPUIDPP_VERSION_STRING
+ * @brief Version string.
  */
 
 // vim: ft=cpp.doxygen
