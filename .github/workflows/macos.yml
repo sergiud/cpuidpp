@@ -1,0 +1,36 @@
+name: macOS
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: AppleClang-${{matrix.build_type}}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: true
+      matrix:
+          build_type: [Release, Debug]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Ninja
+      uses: ashutoshvarma/setup-ninja@master
+      with:
+        version: 1.10.0
+
+    - name: Configure
+      shell: bash
+      run: |
+        cmake -S . -B build_${{matrix.build_type}}/ \
+              -G Ninja
+    - name: Build
+      shell: bash
+      run: |
+        cmake --build build_${{matrix.build_type}}/ \
+              --config ${{matrix.build_type}}
+
+    - name: Run tests
+      shell: bash
+      run: |
+        ./build_${{matrix.build_type}}/test_cpuidpp
