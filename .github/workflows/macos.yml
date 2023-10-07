@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
     name: AppleClang-${{matrix.build_type}}
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       fail-fast: true
       matrix:
@@ -24,6 +24,7 @@ jobs:
       run: |
         cmake -S . -B build_${{matrix.build_type}}/ \
               -G Ninja
+
     - name: Build
       shell: bash
       run: |
