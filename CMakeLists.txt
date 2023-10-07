@@ -1,9 +1,4 @@
-cmake_minimum_required (VERSION 3.0)
-
-if (POLICY CMP0063)
-  cmake_policy (SET CMP0063 NEW)
-endif (POLICY CMP0063)
-
+cmake_minimum_required (VERSION 3.16)
 project (cpuidpp)
 
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
