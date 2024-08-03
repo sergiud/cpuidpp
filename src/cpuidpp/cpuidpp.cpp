@@ -117,12 +117,7 @@ struct ExtractChar
         ExtractChar<T, N - 1, Size>::fill(value, out);
 
         const auto ch = static_cast<char>((value >> (Index * 8)) & 0xff);
-
-        // If this is the last character in the sequence corresponding to a
-        // binary zero, discard it.
-        if (Index + 1 != Size || ch != '\0') {
-            out.append(1, ch);
-        }
+        out.append(1, ch);
     }
 };
 
@@ -453,6 +448,15 @@ struct CPUIDImpl
             model += ExtractCharsFromArray<0, 1, 2, 3>::extract(info);
 
             using std::placeholders::_1;
+
+            // Trim null on the right
+            std::string::size_type pos = model.find_last_not_of('\0');
+
+            if (pos != std::string::npos) {
+                // pos is pointing to a valid character we do not want to
+                // discard. Advance to the next one.
+                model.erase(pos + 1);
+            }
 
             // Trim whitespace left and right
             model.erase(model.begin(), std::find_if_not(model.begin(), model.end(),
