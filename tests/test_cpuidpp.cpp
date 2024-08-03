@@ -2,7 +2,7 @@
  * @file
  * @brief Prints CPU features.
  *
- * @copyright © 2017 Sergiu Deitsch. Distributed under the Boost Software
+ * @copyright © 2024 Sergiu Deitsch. Distributed under the Boost Software
  * License, Version 1.0. (See accompanying file LICENSE or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  */

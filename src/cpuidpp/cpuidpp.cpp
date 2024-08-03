@@ -2,7 +2,7 @@
  * @brief %cpuidpp implementation.
  * @file
  *
- * @copyright © 2017 Sergiu Deitsch. Distributed under the Boost Software
+ * @copyright © 2024 Sergiu Deitsch. Distributed under the Boost Software
  * License, Version 1.0. (See accompanying file LICENSE or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  */
@@ -115,7 +115,14 @@ struct ExtractChar
         constexpr std::size_t Index = N - 1;
 
         ExtractChar<T, N - 1, Size>::fill(value, out);
-        out.append({ static_cast<char>((value >> (Index * 8)) & 0xff) });
+
+        const auto ch = static_cast<char>((value >> (Index * 8)) & 0xff);
+
+        // If this is the last character in the sequence corresponding to a
+        // binary zero, discard it.
+        if (Index + 1 != Size || ch != '\0') {
+            out.append(1, ch);
+        }
     }
 };
 
