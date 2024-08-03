@@ -21,7 +21,7 @@ jobs:
             env: x64
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: msys2/setup-msys2@v2
       if: ${{ startswith(matrix.sys, 'mingw') }}
       with:
