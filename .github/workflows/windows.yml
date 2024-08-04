@@ -45,7 +45,9 @@ jobs:
       env:
         CXX: ${{matrix.env}}-w64-mingw32-g++
       run: |
-        cmake -S . -B build_${{matrix.build_type}}/ -G Ninja
+        cmake -S . -B build_${{matrix.build_type}}/ -G Ninja \
+              -DCMAKE_CXX_STANDARD=11 \
+              -DCMAKE_CXX_STANDARD_REQUIRED=ON
 
     - name: Build MinGW
       shell: msys2 {0}

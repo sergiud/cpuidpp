@@ -23,7 +23,9 @@ jobs:
       shell: bash
       run: |
         cmake -S . -B build_${{matrix.build_type}}/ \
-              -G Ninja
+              -G Ninja \
+              -DCMAKE_CXX_STANDARD=11 \
+              -DCMAKE_CXX_STANDARD_REQUIRED=ON
 
     - name: Build
       shell: bash
