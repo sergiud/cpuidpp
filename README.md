@@ -10,7 +10,7 @@ This repository provides a C++11 library for identifying CPU features.
 ## Requirements
 
 * C++11 compiler
-* CMake 3.0
+* CMake 3.16
 * Doxygen (optional)
 
 ## Getting Started
