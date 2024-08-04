@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['pae_0',['pae',['../d4/df6/namespacecpuidpp.html#a79eec67ebc9cef75e6bfb9a98946ed1f',1,'cpuidpp']]],
+  ['pat_1',['pat',['../d4/df6/namespacecpuidpp.html#a4583774b717984180f6db0792826bbbc',1,'cpuidpp']]],
+  ['pbe_2',['pbe',['../d4/df6/namespacecpuidpp.html#a15dfb18d76213e5428c5c22d971af859',1,'cpuidpp']]],
+  ['pcid_3',['pcid',['../d4/df6/namespacecpuidpp.html#ac2c6720f1a4e2ef727aeabddd1e70f5d',1,'cpuidpp']]],
+  ['pclmulqdq_4',['pclmulqdq',['../d4/df6/namespacecpuidpp.html#ae2f3862ea5eafd8c199fa4a477a8f524',1,'cpuidpp']]],
+  ['pcommit_5',['pcommit',['../d4/df6/namespacecpuidpp.html#a58056172bc73cc6d5601db9688f4f1d0',1,'cpuidpp']]],
+  ['pcx_5fl2i_6',['pcx_l2i',['../d4/df6/namespacecpuidpp.html#a62184b7c996bf7cc566c1c8db132af74',1,'cpuidpp']]],
+  ['pdcm_7',['pdcm',['../d4/df6/namespacecpuidpp.html#a1eaa6b1f5b73018b2a4626defa2649a1',1,'cpuidpp']]],
+  ['pdpe1gb_8',['pdpe1gb',['../d4/df6/namespacecpuidpp.html#aedfb9d7e4bdaf92dd793acb5d0d77a34',1,'cpuidpp']]],
+  ['perfctr_5fcore_9',['perfctr_core',['../d4/df6/namespacecpuidpp.html#a5880bdc65d88d748952d23c35bfc2618',1,'cpuidpp']]],
+  ['perfctr_5fnb_10',['perfctr_nb',['../d4/df6/namespacecpuidpp.html#ac60480a12d406b1504e433328ed939fd',1,'cpuidpp']]],
+  ['perftsc_11',['perftsc',['../d4/df6/namespacecpuidpp.html#aea13414ff012f5ec529e36d872b9c872',1,'cpuidpp']]],
+  ['pge_12',['pge',['../d4/df6/namespacecpuidpp.html#a9aaaeb696385f350cf9b1ff9e3c4b6ad',1,'cpuidpp']]],
+  ['pku_13',['pku',['../d4/df6/namespacecpuidpp.html#aa21e67098ac0d031cd57bcac82ebacff',1,'cpuidpp']]],
+  ['popcnt_14',['popcnt',['../d4/df6/namespacecpuidpp.html#a8f04bae66a2ffaa5b9815cc90a0d6e28',1,'cpuidpp']]],
+  ['pqe_15',['pqe',['../d4/df6/namespacecpuidpp.html#afb265c884fbacc77c9f8cd28aab75100',1,'cpuidpp']]],
+  ['pqm_16',['pqm',['../d4/df6/namespacecpuidpp.html#a600fae9016e0f9c4312beae90d67942b',1,'cpuidpp']]],
+  ['prefetchwt1_17',['prefetchwt1',['../d4/df6/namespacecpuidpp.html#ae108cb7dd1d3aa4a4fd99ceaa9697535',1,'cpuidpp']]],
+  ['pse_18',['pse',['../d4/df6/namespacecpuidpp.html#a0cb4769533b54c63edacf2ec03e4b36a',1,'cpuidpp']]],
+  ['pse36_19',['pse36',['../d4/df6/namespacecpuidpp.html#a4c38fffb6a7637fe8cd6065880727859',1,'cpuidpp']]],
+  ['psn_20',['psn',['../d4/df6/namespacecpuidpp.html#abb4aca0dabd103d090d3f25f2fec20e6',1,'cpuidpp']]]
+];

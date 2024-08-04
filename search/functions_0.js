@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['abm_0',['abm',['../d4/df6/namespacecpuidpp.html#ab4924406aa2081c1bd7af8a1e0f44ff5',1,'cpuidpp']]],
+  ['acpi_1',['acpi',['../d4/df6/namespacecpuidpp.html#ac410e5802580e6396cf6afc29a86ca94',1,'cpuidpp']]],
+  ['adx_2',['adx',['../d4/df6/namespacecpuidpp.html#a154f38af8ad3a2317c94d974d0cc642c',1,'cpuidpp']]],
+  ['aes_3',['aes',['../d4/df6/namespacecpuidpp.html#a4a97ed0650f9be39fb13971854346753',1,'cpuidpp']]],
+  ['amd_5f3dnow_4',['amd_3dnow',['../d4/df6/namespacecpuidpp.html#a40239958f473de6de61074596873c0de',1,'cpuidpp']]],
+  ['amd_5f3dnowext_5',['amd_3dnowext',['../d4/df6/namespacecpuidpp.html#ac7f924bfb730d3998a63467bf436f334',1,'cpuidpp']]],
+  ['amd_5f3dnowprefetch_6',['amd_3dnowprefetch',['../d4/df6/namespacecpuidpp.html#a4ac1ae79101c82f989085ce7f5c7c204',1,'cpuidpp']]],
+  ['apic_7',['apic',['../d4/df6/namespacecpuidpp.html#a5b588c311214a86d2976fb651a4d14e7',1,'cpuidpp']]],
+  ['avx_8',['avx',['../d4/df6/namespacecpuidpp.html#a2773d4800424e276038412d4ee7f1061',1,'cpuidpp']]],
+  ['avx2_9',['avx2',['../d4/df6/namespacecpuidpp.html#a47d3a152450109a981cc6c5bba5f17df',1,'cpuidpp']]],
+  ['avx512_5f4fmaps_10',['avx512_4fmaps',['../d4/df6/namespacecpuidpp.html#a50f69e311c5899636900a68eaea7bc4d',1,'cpuidpp']]],
+  ['avx512_5f4vnniw_11',['avx512_4vnniw',['../d4/df6/namespacecpuidpp.html#a4ce35d07aa0d2e6f2d4a15d47edfb7a8',1,'cpuidpp']]],
+  ['avx512bw_12',['avx512bw',['../d4/df6/namespacecpuidpp.html#a5d783068c820c5b0a51b47a834e79349',1,'cpuidpp']]],
+  ['avx512cd_13',['avx512cd',['../d4/df6/namespacecpuidpp.html#a44c53ae91b8cbccf76f0802084bdcfff',1,'cpuidpp']]],
+  ['avx512dq_14',['avx512dq',['../d4/df6/namespacecpuidpp.html#a5d52cd41577d654225ad80a7ab9a820f',1,'cpuidpp']]],
+  ['avx512er_15',['avx512er',['../d4/df6/namespacecpuidpp.html#a568d8bb34d83fa87d65d7f8a5aa51249',1,'cpuidpp']]],
+  ['avx512f_16',['avx512f',['../d4/df6/namespacecpuidpp.html#ab8397dbc9d7c85b247b0687a2a8080e1',1,'cpuidpp']]],
+  ['avx512ifma_17',['avx512ifma',['../d4/df6/namespacecpuidpp.html#a990c566b20f927586045cd523af9b1b8',1,'cpuidpp']]],
+  ['avx512pf_18',['avx512pf',['../d4/df6/namespacecpuidpp.html#ac38da8d013119573ff66661817fc50c6',1,'cpuidpp']]],
+  ['avx512vbmi_19',['avx512vbmi',['../d4/df6/namespacecpuidpp.html#ac0d3f9cd61c8e162a26067f4ef3af7f5',1,'cpuidpp']]],
+  ['avx512vl_20',['avx512vl',['../d4/df6/namespacecpuidpp.html#a6de08027fc907649a1a119c64e2d01f6',1,'cpuidpp']]],
+  ['avx512vpopcntdq_21',['avx512vpopcntdq',['../d4/df6/namespacecpuidpp.html#a9cab67ce8ca10afa2e96b35edd4b9ca6',1,'cpuidpp']]]
+];
