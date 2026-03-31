@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
     name: AppleClang-${{matrix.build_type}}
-    runs-on: macos-13
+    runs-on: macos-15-intel
     strategy:
       fail-fast: true
       matrix:
