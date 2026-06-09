@@ -10,7 +10,7 @@ jobs:
       fail-fast: true
       matrix:
         build_type: [Release, Debug]
-        sys: [mingw32, mingw64, msvc-17]
+        sys: [mingw32, mingw64, msvc-17, msvc-18]
         include:
           - sys: mingw32
             env: i686
@@ -20,7 +20,11 @@ jobs:
             runner: windows-2025
           - sys: msvc-17
             generator: 'Visual Studio 17 2022'
-            runner: windows-2025
+            runner: windows-2022
+            env: x64
+          - sys: msvc-18
+            generator: 'Visual Studio 18 2026'
+            runner: windows-2025-vs2026
             env: x64
 
     steps:
